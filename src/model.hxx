@@ -91,8 +91,7 @@ public:
     bool hit_side(int width) override;
     bool hit_vertical_boundary (int height) override;
     bool missile_collision() override;
-
-
+    
 };
 
 
@@ -113,10 +112,6 @@ public:
 class missile{
 
 public:
-    ge211::Position  position;
-    ge211::Dimensions velocity{0, 0};
-    bool alive = true;
-
     explicit missile(ge211::Position  position) :position(position){};
     // member functions
 
@@ -128,7 +123,10 @@ public:
 
     missile next();
 
-
+private:
+    ge211::Position  position;
+    ge211::Dimensions velocity{0, 0};
+    bool alive = true;
 };
 
 class model{
