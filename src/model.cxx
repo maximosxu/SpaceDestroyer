@@ -1,5 +1,7 @@
 #include "model.hxx"
-#include "ge211"
+#include "ge211.hxx"
+#include "geometry.hxx"
+
 void falcon::destruct() {
 
 }
@@ -73,10 +75,17 @@ screenObject destroyer::next_() {
     return screenObject::next_();
 }
 
-missile missile::next() {
-    return missile(ge211::Position{0, 0});
+screenObject missile::next() {
+    return screenObject::next_();
 }
 
-bool missile::collision() {
-    return false;
-}
+void model::update() { }
+void model::launch() { }
+void model::go_left(bool b) { }
+void model::go_right(bool b) { }
+void model::thrust(bool b) { }
+model::model(const Geometry &geometry)
+        : geometry_(geometry)
+        , deathstar_(deathstar_.top_left(),300)
+        , falcon_(falcon_.top_left(),100)
+{}
