@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include <ge211.hxx>
@@ -11,46 +10,106 @@ struct Geometry
     // The dimensions of the whole window:
     ge211::Dimensions scene_dims;
 
-    // The dimensions of the Falcon:
-    ge211::Dimensions falcon_dims_;
+    // The dimensions of the falcon (the block at the bottom):
+    ge211::Dimensions falcon_dim_;
 
-    // The dimensions of the Destroyers:
-    ge211::Dimensions destroyer_dims_;
+    // Number of columns of asteroids:
+    int asteroid_cols;
 
-    // The dimensions of the Deathstar:
-    int deathstar_radius_;
+    // Number of rows of asteroids:
+    int asteroid_rows;
 
-    // The dimensions of the Asteroids:
-    int asteroid_radius_;
 
-    // The dimensions of a Missile:
-    ge211::Dimensions missile_dims_;
+    // Number of columns of destroyers:
+    int destroyer_cols;
 
-    // Number of asteroids;
-    int asteroid_num;
+    // Number of rows of destroyers:
+    int destroyer_rows;
 
-    // Number of destoryers;
-    int destroyer_num;
+    // The number of pixels of space between each column and row of
+    // asteroid:
+    ge211::Dimensions asteroid_spacing;
 
-    // The number of pixels of space between each space object
-    ge211::Dimensions object_spacing;
+    // The number of pixels of space between each column and row of
+    // destroyer:
+    ge211::Dimensions destroyer_spacing;
 
-    // Number of pixels from top of screen to top of destroyers:
-    int top_destroyer_margin;
+    // The falcon velocity {width, height}:
+    ge211::Dimensions falcon_velocity;
 
-    // Number of pixels from top of screen to top of asteroids:
-    int top_asteroid_margin;
+    // The destroyer velocity {width, height}:
+    ge211::Dimensions destroyer_velocity;
+
+    // The falcon velocity {width, height}:
+    ge211::Dimensions deathStar_velocity;
+
+    ge211::Dimensions asteroid_velocity;
+
+    // The missile velocity {width, height}:
+    ge211::Dimensions missile_velocity;
+
+    // The missile size
+    ge211::Dimensions missile_dims;
+
+
+
+
+    // Number of pixels from top of screen to top of destroyer formation:
+    int destroyer_top_margin;
 
     // Number of pixels from sides of screen to sides of destroyer formation:
-    int side_destroyer_margin;
+    int destroyer_side_margin;
 
-    // Number of pixels from sides of screen to sides of asteroid formation:
-    int side_asteroid_margin;
+    // Number of pixels from top of screen to top of destroyer formation:
+    int asteroid_top_margin;
 
-    // Number of pixels from bottom of screen to bottom of Falcon.
+    // Number of pixels from sides of screen to sides of destroyer formation:
+    int asteroid_side_margin;
+
+    //Number of pixels from *top* pf screen to the *bottom* of destroyer formation.
+    int destroyer_depth;
+
+    //Number of pixels from *top* pf screen to the *bottom* of asteroid formation.
+    int asteroid_depth;
+
+    // Number of pixels from bottom of screen to bottom of falcon in frozen state.
     int bottom_margin;
 
-    // The initial position of the Falcon. This is a member function because
+    //Number of life on a falcon
+    int f_life;
+
+    //Number of life on a deathstar
+    int d_life;
+
+    ge211::Dimensions deathStar_dims;
+
+    ge211::Dimensions falcon_missile_velocity;
+    ge211::Dimensions destroyer_missile_velocity;
+
+    ge211::Dimensions asteroid_velocity1;
+    ge211::Dimensions asteroid_velocity2;
+    ge211::Dimensions asteroid_velocity3;
+    ge211::Dimensions asteroid_velocity4;
+
+
+    // The initial position of the falcon. This is a member function because
     // it's computed from the other properties.
-    ge211::Position Falcon_Position() const noexcept;
+    ge211::Position falcon_top_left0() const noexcept;
+
+    // The dimensions of each destroyer. Also computed from the other properties.
+    //
+    // PRECONDITIONS (asserted):
+    //  - destroyer_cols > 0
+    //  - destroyer_rows > 0
+    ge211::Dimensions destroyer_dims;
+
+    // The dimensions of each asteroid. Also computed from the other properties.
+    //
+    // PRECONDITIONS (asserted):
+    //  - destroyer_cols > 0
+    //  - destroyer_rows > 0
+    ge211::Dimensions asteroid_dims() const noexcept;
+
+
 };
+

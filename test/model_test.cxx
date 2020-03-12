@@ -1,103 +1,105 @@
 #include "model.hxx"
 #include <catch.hxx>
 
-//
-// TODO: Write preliminary model tests.
-//
-// These tests should demonstrate at least six of the functional
-// requirements.
-//
-
-
-
-TEST_CASE("Asteroid hits side")
+// Tests that when the falcon loses all lives,
+// the game is reset and the Falcon's lives are set back to 3
+TEST_CASE("FALCON LOSES ALL LIVES")
 {
-    ge211::Position grid{1000, 1500};
-    asteroid Asteroid();
-    Asteroid.position{90, 90};
-    CHECK_FALSE(Asteroid.hit_side(grid));
-    Asteroid.position{-2, 50};
-    CHECK(Asteroid.hit_side(grid));
+    Geometry geometry;
+    Model model_(geometry);
+    model_.launch();
+    CHECK(model_.screenState);
+    model_.falcon.life_ -= 2;
+    CHECK(model_.falcon.life_ == 1);
+    Missile missile(geometry, model_.falcon.center);  // missile hits falcon
+    model_.ammo.push_back(missile);
+    model_.update();
+    CHECK(model_.falcon.life_ == 3);
+}
+
+// Tests that the asteroid's velocity is reflected when
+// it hits another asteroid
+TEST_CASE("Asteroid hitting another screenObject")
+{
+    Geometry geometry;
+    Model model_(geometry);
+    model_.launch();
+
+    CHECK(model_.screenState);
+
+    if(model_.stones.size() > 1){
+
+        model_.stones[0].velocity = {1 ,1};
+        model_.stones[1].velocity = {-1 ,-1};
+        model_.stones[1].center = model_.stones[0].center;
+
+        model_.update();
+        CHECK(model_.stones[0].velocity.width == 1);
+        CHECK(model_.stones[0].velocity.height == 1);
+        CHECK(model_.stones[1].velocity == ge211::Dimensions {1, 1});
+    }
+}
+
+// Tests that an asteroid is destroyed when a missile hits it
+TEST_CASE("Missile Hits Asteroid"){
+    Geometry geometry;
+    Model model_(geometry);
+    model_.launch();
+
+    CHECK(model_.screenState);
+
+    Missile missile(geometry, model_.stones[0].center);
+    int number = model_.stones.size();
+    model_.ammo.push_back(missile);
+
+    model_.update();
+
+    CHECK(model_.stones.size() == number-1);
+}
+
+// Tests that the destroyers' horizontal
+// velocity is reversed when hitting the imaginary side wall
+TEST_CASE("Destroyer hits Wall") {
+    Geometry geometry;
+    Model model_(geometry);
+    model_.launch();
+
+    CHECK(model_.screenState);
+    int index = model_.fleet.size() -1;
+    ge211::Dimensions innitialVelocity = model_.fleet[index].velocity;
+
+    CHECK(model_.fleet[index].velocity == innitialVelocity);
+    CHECK(model_.fleet[index-1].velocity == innitialVelocity);
+    CHECK(model_.fleet[index-2].velocity == innitialVelocity);
+    CHECK(model_.fleet[index-3].velocity == innitialVelocity);
+
+    model_.fleet[index].center.x = model_.geometry_.scene_dims.width;
+    innitialVelocity = model_.destroyerVelocity;
+    model_.update();
+    CHECK(model_.destroyerVelocity == innitialVelocity*-1);
 
 }
 
+// Tests that missiles are destoryed when it hits the sides of the window
+TEST_CASE("Missile hits windows sides"){
+    Geometry geometry;
+    Model model_(geometry);
+    model_.launch();
 
-
-TEST_CASE("Missile Out of bounds")
-{
-    ge211::Position grid{1000, 1500};
-
-    missile Missile(30, 30);
-    CHECK_FALSE(Missile.hit_bound(grid));
-    CHECK(Missile.alive);
-    Missile.position{400, 1600};
-    CHECK(Missile.hit_bound(grid));
-    Missile.destroy()
-    CHECK_FALSE(Missile.alive);
-
+    Missile missile(geometry,{-10,-10});
+    model_.ammo.push_back(missile);
+    model_.update();
+    CHECK(model_.ammo.empty());
 }
 
+// Tests that asteroids are reflected vertically when
+// they hit the invisible asteroid field below the destroyers
+TEST_CASE("Asteroid Field"){
+    Geometry geometry;
+    Model model_(geometry);
+    model_.launch();
 
-
-TEST_CASE("Player gets hit by missile")
-{
-    model m();
-    missile Missile;
-    falcon player;
-    CHECK_FALSE(player.missile_collision());
-    player.position = {500,500};
-    Missile.position = {500,400};
-    Missile.velocity = {0,100};
-    Missile.next();
-    CHECK(player.missile_collision());
-    player.destruct();
-    Missile.destroy();
-    CHECK_FALSE(Missile.alive);
-    CHECK(player.live_ == 2);
-}
-
-
-
-TEST_CASE("Destroyer gets hit by missile")
-{
-    model m();
-    missile Missile;
-    destroyer Destroyer;
-    CHECK_FALSE(Destroyer.missile_collision());
-    Destroyer.position = {500,500};
-    Missile.position = {500,400};
-    Missile.velocity = {0,100};
-    Missile.next();
-    CHECK(Destroyer.missile_collision());
-    Destroyer.destruct();
-    Missile.destroy();
-    CHECK_FALSE(Missile.alive);
-}
-
-
-
-TEST_CASE("Asteroid gets hit by missile")
-{
-    model m();
-    missile Missile;
-    asteroid Asteroid;
-    Asteroid.position = {500,500};
-    Missile.position = {500,400};
-    Missile.velocity = {0,100};
-    Missile.next();
-    CHECK(Asteroid.missile_collision());
-    Asteroid.destruct();
-    Missile.destroy();
-    CHECK_FALSE(Missile.alive);
-}
-
-TEST_CASE("Falcon Out of bounds") {
-    ge211::Position grid{1000, 1500};
-    falcon player;
-    player.position = {500,1200};
-    CHECK_FALSE(player.hit_bound(grid));
-    CHECK(player.live_ == 3);
-    player.position = {1300,1600};
-    CHECK(player.hit_bound(grid));
-    CHECK(player.live_ == 2);
+    ge211::Dimensions initialvelocity = model_.stones[0].velocity;
+    model_.stones[0].center = {300,180};
+    CHECK(model_.stones[0].velocity.height == -1 * initialvelocity.height);
 }

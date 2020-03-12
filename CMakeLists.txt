@@ -4,13 +4,19 @@ include(.cs211/cmake/CMakeLists.txt)
 
 set(MODEL_SRC
         # LIST ADDITIONAL MODEL .cxx FILES HERE:
+        src/missile.cxx
         src/geometry.cxx
+        src/screenObject.cxx
+        src/falcon.cxx
+        src/asteroid.cxx
+        src/destroyer.cxx
+        src/deathStar.cxx
         src/model.cxx)
 
 add_program(main
     src/main.cxx
+    src/ui.cxx
     # LIST ADDITIONAL NON-MODEL (UI) .cxx FILES HERE:
-        src/ui.cxx
     ${MODEL_SRC})
 target_link_libraries(main ge211)
 
@@ -19,4 +25,4 @@ add_test_program(model_test
     ${MODEL_SRC})
 target_link_libraries(model_test ge211)
 
-# vim: ft=cmake
+

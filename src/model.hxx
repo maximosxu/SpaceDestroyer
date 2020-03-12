@@ -1,176 +1,68 @@
 #pragma once
-
-#include <ge211.hxx>
 #include "geometry.hxx"
-#include <vector>
+#include "screenObject.hxx"
+#include "missile.hxx"
+#include "falcon.hxx"
+#include "asteroid.hxx"
+#include "destroyer.hxx"
+#include "deathStar.hxx"
+#include  <vector>
 
 //
 // Model Classes
 //
-using Block = ge211::Rectangle;
 
-// Base class for every object on screen
-class screenObject : public Block {
-
+class  Model{
 
 public:
-    explicit screenObject(int radius) : radius(radius) {}
+    explicit Model(Geometry const& geometry = Geometry());
 
-//defines how an object will be destructed
-    virtual void destruct() {};
-    //Returns the next position of next
-    virtual screenObject next_() {return screenObject{radius};};
-    // Returns the front middle end of the objectS on screen that
-    // is used to control their movement and shoot missiles
-    virtual ge211::Position  pointer() {return ge211::Position{0, 0};};
-    // Defines behaviour when an object hits any side
-    virtual bool hit_side(int width) {return false;}
-    // Defines the behavior of objects when they hit  their vertical boundary
-    virtual bool hit_vertical_boundary (int height) {return false;};
-    //Defines what objects do when hit by a missile. Returns
-    virtual bool missile_collision() {return false;};
-    //used to set
-
-protected:
-    int radius{};
-    bool alive = false;
-    ge211::Position position{0, 0};
-    ge211::Position center{0, 0};
-    ge211::Dimensions velocity{1, 0};
-};
-
-
-
-class falcon: public screenObject{
-
-    // predefined private members
-    int live_ = 3;
-    ge211::Position  position;
-
-public:
-    //The following are derived from above.
-    explicit falcon(ge211::Position position, int radius ) : screenObject(radius), position(position) {};
-    void destruct() override;
-    screenObject next_() override;
-    ge211::Position  pointer() override;
-    bool hit_side(int width) override;
-    bool hit_vertical_boundary (int height) override;
-    bool missile_collision() override;
-
-
-};
-
-
-
-class destroyer: public screenObject{
-
-    // predefined private members
-
-
-public:
-    //The following are derived from above.
-    explicit destroyer(ge211::Position position, int radius) : screenObject(radius), position(position) {};
-    void destruct() override;
-    screenObject next_() override;
-    ge211::Position  pointer() override;
-    bool hit_side(int width) override;
-    bool hit_vertical_boundary (int height) override;
-    bool missile_collision() override;
-
-private:
-    ge211::Position  position;
-};
-
-
-
-class asteroid: public screenObject{
-
-    // predefined private members
-
-
-public:
-    //The following are derived from above.
-    explicit asteroid(ge211::Position position, int radius) : screenObject(radius), position(position) {};
-    void destruct() override;
-    screenObject next_() override;
-    ge211::Position  pointer() override;
-    bool hit_side(int width) override;
-    bool hit_vertical_boundary (int height) override;
-    bool missile_collision() override;
-
-private:
-    ge211::Position  position;
-};
-
-
-
-class deathstar: public destroyer{
-
-    // predefined private members
-
-
-public:
-    //The following are derived from above.
-    explicit deathstar(ge211::Position position, int radius) : destroyer(position, radius) {};
-
-};
-
-
-
-class missile : public screenObject{
-
-public:
-    explicit missile(ge211::Position position, int radius) : screenObject(radius), position(position) {};
-    // member functions
-
-    //Returns true when missile hits top or bottom
-    bool hit_bound();
-
-    //Destroys missile
-    void destroy();
-
-    screenObject next();
-
-
-private:
-    ge211::Position  position;
-    ge211::Dimensions velocity{0, 0};
-    bool alive = true;
-};
-
-class model{
-
-
-
-public:
-    explicit model(Geometry const& geometry = Geometry());
-    //model()= default; ;
-    // Helper function to Checks if any collision between a missile
-    // and any space object and destroys the space object and missile
-    static void missileSpaceObjectCollision();
-
-    // Helper function to check if missile is out of bounds, destroying it
-    void missileOutOfBounds();
-
-    //update the state of the game using the predefined instructions
-    void update();
-
-    //starts the game
     void launch();
 
-    // Falcon Movement
-    void go_left(bool b);
-    void go_right(bool b);
-    void thrust(bool b);
+    void update();
 
-    ///
-    /// MEMBER VARIABLES
-    ///
+    void Move_asteroid();
 
-    std::vector<destroyer> destroyers_;
-    std::vector<missile> missiles_;
-    std::vector<asteroid> asteroids_;
-    falcon falcon_;
-    deathstar deathstar_;
-    Geometry const     geometry_;
+    void Move_destroyer();
+
+    void check_asteroid_collision(Asteroid &);
+
+    bool falcon_hits_something();
+
+    void innitialize_asteroids();
+
+    void innitialize_destroyers(int count);
+
+    void falconupdate(int);
+
+    void fire_missiles_now(int);
+
+    void move_missile();
+
+    void move_deathstar();
+
+///
+/// Member Variables
+///
+
+    Geometry const geometry_;
+
+    std::vector<Missile> ammo;
+
+    std::vector<Destroyer> fleet;
+
+    std::vector<Asteroid> stones;
+
+    Falcon falcon;
+
+    DeathStar deathStar;
+
+    ge211::Dimensions destroyerVelocity;
+
+    bool screenState;
+
+    int count; /// Number of destroyers on screen
+
+
 };
+
