@@ -7,7 +7,7 @@
 Geometry::Geometry() noexcept
         : destroyer_cols {   5}
         , destroyer_rows {   1}
-        , asteroid_cols  {   2}
+        , asteroid_cols  {   4}
         , asteroid_rows  {   2}
         , falcon_dim_    { 60,  60}
         , destroyer_top_margin{  10}
