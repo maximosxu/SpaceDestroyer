@@ -25,4 +25,12 @@ add_test_program(model_test
     ${MODEL_SRC})
 target_link_libraries(model_test ge211)
 
+add_test_program(screenObject_test
+        test/screenObject_test.cxx
+        ${MODEL_SRC})
+target_link_libraries(screenObject_test ge211)
 
+add_test_program(missile_test
+        test/missile_test.cxx
+        ${MODEL_SRC})
+target_link_libraries(missile_test ge211)
