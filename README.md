@@ -1,6 +1,6 @@
 # Proposal: SPACE DESTROYER!
 
-## by : LINUS OKOTH and Maximos Xu
+## by : Maximos Xu and Linus Okoth
 
 ## About
 Space destroyer is a hybrid version of the 
