@@ -1,24 +1,26 @@
 #include "model.hxx"
 #include <catch.hxx>
 
-// Tests that when the falcon loses all lives,
-// the game is reset and the Falcon's lives are set back to 3
-TEST_CASE("FALCON LOSES ALL LIVES")
-{
+TEST_CASE("FALCON LOSES ALL LIVES"){
+
     Geometry geometry;
     Model model_(geometry);
     model_.launch();
+
     CHECK(model_.screenState);
+
     model_.falcon.life_ -= 2;
+
     CHECK(model_.falcon.life_ == 1);
+
     Missile missile(geometry, model_.falcon.center);  // missile hits falcon
+
     model_.ammo.push_back(missile);
+
     model_.update();
+
     CHECK(model_.falcon.life_ == 3);
 }
-
-// Tests that the asteroid's velocity is reflected when
-// it hits another asteroid
 TEST_CASE("Asteroid hitting another screenObject")
 {
     Geometry geometry;
@@ -40,8 +42,7 @@ TEST_CASE("Asteroid hitting another screenObject")
     }
 }
 
-// Tests that an asteroid is destroyed when a missile hits it
-TEST_CASE("Missile Hits Asteroid"){
+TEST_CASE("nn"){
     Geometry geometry;
     Model model_(geometry);
     model_.launch();
@@ -57,8 +58,6 @@ TEST_CASE("Missile Hits Asteroid"){
     CHECK(model_.stones.size() == number-1);
 }
 
-// Tests that the destroyers' horizontal
-// velocity is reversed when hitting the imaginary side wall
 TEST_CASE("Destroyer hits Wall") {
     Geometry geometry;
     Model model_(geometry);
@@ -80,7 +79,6 @@ TEST_CASE("Destroyer hits Wall") {
 
 }
 
-// Tests that missiles are destoryed when it hits the sides of the window
 TEST_CASE("Missile hits windows sides"){
     Geometry geometry;
     Model model_(geometry);
@@ -92,8 +90,6 @@ TEST_CASE("Missile hits windows sides"){
     CHECK(model_.ammo.empty());
 }
 
-// Tests that asteroids are reflected vertically when
-// they hit the invisible asteroid field below the destroyers
 TEST_CASE("Asteroid Field"){
     Geometry geometry;
     Model model_(geometry);
@@ -101,5 +97,6 @@ TEST_CASE("Asteroid Field"){
 
     ge211::Dimensions initialvelocity = model_.stones[0].velocity;
     model_.stones[0].center = {300,180};
+    model_.update();
     CHECK(model_.stones[0].velocity.height == -1 * initialvelocity.height);
 }
