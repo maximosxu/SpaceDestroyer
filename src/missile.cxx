@@ -18,7 +18,8 @@ bool Missile::hit_top(Geometry const& geometry) const {
 
 bool Missile::hit_bottom(Geometry const& geometry) const {
 
-    return (center_missile_position.y + 0.5*geometry.missile_dims.height > geometry.scene_dims.height);
+    return (center_missile_position.y + 0.5*geometry.missile_dims.height
+    > geometry.scene_dims.height);
 }
 
 Missile Missile::next_(bool status)  {

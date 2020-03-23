@@ -8,11 +8,11 @@ Asteroid::Asteroid(Geometry const & geometry, ge211::Position position)
          : ScreenObject(geometry, position, 40)
 { }
 
-ScreenObject Asteroid::next_(ge211::Dimensions velocity) {
+/*ScreenObject Asteroid::next_(ge211::Dimensions velocity) {
     Asteroid copy(*this);
     copy.center += velocity;
     return copy;
-}
+}*/
 
 bool Asteroid::hit_above_special() {
 

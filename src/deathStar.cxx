@@ -17,7 +17,8 @@ ge211::Position DeathStar::top_center(Geometry const &geometry) const {
     return {center.x, center.y + radius + 10};
 }
 
-void DeathStar::fire_missile(std::vector<Missile> & ammo, Geometry const & geometry) {
+void DeathStar::fire_missile(std::vector<Missile> & ammo, Geometry
+const & geometry) {
 
     ge211::Position position = top_center(geometry);
     Missile missile(geometry, position);

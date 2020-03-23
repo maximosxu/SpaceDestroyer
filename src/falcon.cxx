@@ -9,12 +9,14 @@ Falcon::Falcon(Geometry const& geometry, ge211::Position position)
 
 { }
 
+/*
 Falcon Falcon::next_() {
     Falcon copy (*this);
     copy.center += velocity;
 
     return copy;
 }
+*/
 
 //bool Falcon::hits_screenObject(ScreenObject & dest) const {
 //    return ((abs(dest.center.x - center.x)) < dest.radius + radius) ||
@@ -35,6 +37,7 @@ void Falcon::fire_missile(std::vector<Missile>& ammo, Geometry const & geometry)
     ammo.push_back(missile);
 }
 
+/*
 void Falcon::destroy() {
 
     life_ -= 1;
@@ -44,6 +47,7 @@ bool Falcon::isAlive() {
 
     return life_ > 0;
 }
+*/
 
 
 

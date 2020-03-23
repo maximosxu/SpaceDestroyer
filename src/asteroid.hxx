@@ -9,7 +9,6 @@ class Asteroid : public ScreenObject {
 public:
     Asteroid(Geometry const &, ge211::Position);
 
-    ScreenObject next_(ge211::Dimensions);
 
     bool hit_above_special();
 

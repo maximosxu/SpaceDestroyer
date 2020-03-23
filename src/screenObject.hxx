@@ -35,7 +35,6 @@ public:
     //checks is any missile in ammo hit the spaceObject.
     //If true it destroys the missile then returns true
 
-    bool hits_destroyer(ScreenObject &) const;
 
     bool hit_by_missile(std::vector<Missile>& ammo );
 
@@ -45,7 +44,6 @@ public:
 
     ge211::Position top_left() const;
 
-    ge211::Position bottom_right() const;
 
     bool got_hit(Missile &) const;
 

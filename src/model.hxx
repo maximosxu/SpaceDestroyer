@@ -19,7 +19,7 @@ public:
 
     void launch();
 
-    void update();
+    void update(double);
 
     void Move_asteroid();
 
@@ -62,6 +62,7 @@ public:
     bool screenState;
 
     int count; /// Number of destroyers on screen
+    double doubt;
 
 
 };

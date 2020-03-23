@@ -29,7 +29,9 @@ void Ui::draw(ge211::Sprite_set & sprites)
         sprites.add_sprite(missile_sprite_, missile.top_left());
     }
     for(int i = 0; i < model_.falcon.life_; i++){
-        sprites.add_sprite(life_sprite_, {20 + (i*30), model_.geometry_.scene_dims.height - 80});
+        sprites.add_sprite(life_sprite_, {20 + (i*30),
+                                          model_.geometry_.scene_dims.height
+                                          - 80});
     }
     if(model_.deathStar.appear){
         sprites.add_sprite(death_sprite_, model_.deathStar.top_left());
@@ -64,6 +66,6 @@ void Ui::on_key(ge211::Key key) {
 
 void Ui::on_frame(double dt) {
 //    ge211::Random* rnd = &get_random();
-    model_.update();
+    model_.update(dt);
 }
 

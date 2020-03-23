@@ -13,7 +13,7 @@ public:
 
     Falcon(const Geometry &geometry, ge211::Position position);
 
-    Falcon next_() ;
+//    Falcon next_() ;
 
     ge211::Position top_center(Geometry const & geometry) const;
 
@@ -22,9 +22,9 @@ public:
 
     void fire_missile(std::vector<Missile> &, Geometry const &);
 
-    void destroy();
+//    void destroy();
 
-    bool isAlive();
+//    bool isAlive();
 
 
 

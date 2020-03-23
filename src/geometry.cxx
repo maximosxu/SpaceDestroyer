@@ -45,9 +45,12 @@ ge211::Position Geometry::falcon_top_left0() const noexcept
              scene_dims.height - bottom_margin - falcon_dim_.height- 100 };
 }
 
-// Computes how large each destroyer and asteroid can be (in a given dimension), given the
-// total number of pixels available in that dimension, the number of destroyers and asteroids
-// in that dimensions, and the number of space pixels to leave in between.
+// Computes how large each destroyer and asteroid can be
+// (in a given dimension), given the
+// total number of pixels available in that dimension, the
+// number of destroyers and asteroids
+// in that dimensions, and the number of space pixels to
+// leave in between.
 //
 // PRECONDITION: divisor > 0
 static int div_w_spacing(int total, int divisor, int space)
@@ -63,8 +66,10 @@ ge211::Dimensions Geometry::asteroid_dims() const noexcept
 {
     ge211::Dimensions field{scene_dims.width - 2 * asteroid_side_margin,
                             asteroid_depth - asteroid_top_margin};
-    int width  = div_w_spacing(field.width, asteroid_cols, asteroid_spacing.width);
-    int height = div_w_spacing(field.height, asteroid_rows, asteroid_spacing.height);
+    int width  = div_w_spacing(field.width, asteroid_cols,
+            asteroid_spacing.width);
+    int height = div_w_spacing(field.height, asteroid_rows,
+            asteroid_spacing.height);
     return {width, height};
 }
 
@@ -72,7 +77,9 @@ ge211::Dimensions Geometry::asteroid_dims() const noexcept
 //ge211::Dimensions Geometry::destroyer_dims() const noexcept {
 //    ge211::Dimensions field{scene_dims.width - 2 * destroyer_side_margin,
 //                            destroyer_depth - destroyer_top_margin};
-//    int width = div_w_spacing(field.width, destroyer_cols, destroyer_spacing.width);
-//    int height = div_w_spacing(field.height, destroyer_rows, destroyer_spacing.height);
+//    int width = div_w_spacing(field.width, destroyer_cols,
+//    destroyer_spacing.width);
+//    int height = div_w_spacing(field.height, destroyer_rows,
+//    destroyer_spacing.height);
 //    return {width, height};
 //}

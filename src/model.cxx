@@ -8,6 +8,7 @@ Model::Model(const Geometry &geometry)
       ,destroyerVelocity(geometry_.destroyer_velocity)
       ,screenState(false)
       ,count(geometry_.destroyer_cols)
+      ,doubt(0)
       ,deathStar(geometry_, {50, 50})
 {
 
@@ -52,12 +53,12 @@ void Model::Move_asteroid() {
 
 }
 
-void Model::update() {
+void Model::update(double dt) {
 
     if(!deathStar.appear) Move_destroyer();
     Move_asteroid();
     move_missile();
-
+    doubt += dt;
     if (screenState && !deathStar.appear){
 
         if(falcon_hits_something()){
@@ -86,11 +87,13 @@ void Model::update() {
 
     }
 
-    if (fleet.empty() && falcon.life_ > 0 && deathStar.life >0 && deathStar.appear){
+    if (fleet.empty() && falcon.life_ > 0 && deathStar.life >0 &&
+    deathStar.appear){
 
         move_deathstar();
         if (deathStar.life < 1){
-            deathStar.center = {50 + deathStar.radius, 50 + deathStar.radius};
+            deathStar.center = {50 + deathStar.radius, 50 +
+                                deathStar.radius};
             deathStar.life = 3;
             falcon.life_ = 3;
             deathStar.appear = false;
@@ -107,7 +110,8 @@ void Model::update() {
             falcon.life_ -= 1;
             screenState = false;
             if(falcon.life_ > 0){
-                deathStar.center = {50 + deathStar.radius, 50+deathStar.radius};
+                deathStar.center = {50 + deathStar.radius,
+                                    50+deathStar.radius};
                 screenState = false;
                 stones.clear();
                 ammo.clear();
@@ -115,7 +119,8 @@ void Model::update() {
                 falcon.center = geometry_.falcon_top_left0();
                 return;
             }else{
-                deathStar.center = {50 + deathStar.radius, 50 + deathStar.radius};
+                deathStar.center = {50 + deathStar.radius,
+                                    50 + deathStar.radius};
                 deathStar.life = 3;
                 deathStar.appear = false;
                 screenState = false;
@@ -144,7 +149,8 @@ void Model::check_asteroid_collision(Asteroid & asteroid) {
         }
     }
 
-    if (asteroid.hits_bottom(geometry_) || asteroid.hits_side(geometry_) || asteroid.hits_top(geometry_)){
+    if (asteroid.hits_bottom(geometry_) || asteroid.hits_side(geometry_)
+    || asteroid.hits_top(geometry_)){
 
         if(asteroid.hits_bottom(geometry_)) asteroid.reflect_vertically();
         if(asteroid.hits_side(geometry_)) asteroid.reflect_horizontally();
@@ -166,7 +172,8 @@ void Model::check_asteroid_collision(Asteroid & asteroid) {
     }
 
     for(Asteroid& ast : stones ){
-        if (!(asteroid.center.x == ast.center.x && asteroid.center.y == ast.center.y)){
+        if (!(asteroid.center.x == ast.center.x && asteroid.center.y
+        == ast.center.y)){
             if(asteroid.hits_screenObject(ast)) {
                 asteroid.reflect_vertically();
                 asteroid.reflect_horizontally();
@@ -238,11 +245,14 @@ void Model::innitialize_asteroids() {
     for (int i = 0; i < geometry_.asteroid_rows; i++){
         for (int j = 0; j < geometry_.asteroid_cols; j++){
             ge211::Position  pos{geometry_.asteroid_side_margin +
-                                 j * (geometry_.asteroid_dims().width + geometry_.asteroid_spacing.width),
+                                 j * (geometry_.asteroid_dims().width +
+                                 geometry_.asteroid_spacing.width),
                                  geometry_.asteroid_side_margin +
-                                 i * (geometry_.asteroid_dims().height + geometry_.asteroid_spacing.height)};
+                                 i * (geometry_.asteroid_dims().height +
+                                 geometry_.asteroid_spacing.height)};
 
-            ge211::Position position {pos.x, geometry_.asteroid_top_margin + pos.y};
+            ge211::Position position {pos.x, geometry_.asteroid_top_margin +
+            pos.y};
             Asteroid asteroid{geometry_, position};
             stones.push_back(asteroid);
         }
@@ -253,11 +263,14 @@ void Model::innitialize_destroyers(int count) {
     for (int i = 0; i < 1; i++){
         for (int j = 0; j < count; j++){
             ge211::Position  pos{geometry_.destroyer_side_margin +
-                                 j * (geometry_.destroyer_dims.width + geometry_.destroyer_spacing.width),
+                                 j * (geometry_.destroyer_dims.width +
+                                 geometry_.destroyer_spacing.width),
                                  geometry_.destroyer_side_margin +
-                                 i * (geometry_.destroyer_dims.height + geometry_.destroyer_spacing.height)};
+                                 i * (geometry_.destroyer_dims.height +
+                                 geometry_.destroyer_spacing.height)};
 
-            ge211::Position position {pos.x, geometry_.destroyer_top_margin + pos.y};
+            ge211::Position position {pos.x, geometry_.destroyer_top_margin +
+            pos.y};
             Destroyer destroyer{geometry_, position};
             fleet.push_back(destroyer);
         }
